@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start:dev": "sls offline start --stage dev"
+    "start:dev": "sls offline start --stage dev",
+    "start:prod": "sls offline start --stage prod",
+    "teste": ""
   },
   "dependencies": {
     "@middy/core": "^3.4.0",
