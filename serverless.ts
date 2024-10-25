@@ -5,7 +5,7 @@ import serverlessFn from './src/functions';
 const serverlessConfiguration: AWS = {
   service: 'finance-api',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline'],
+  plugins: ['serverless-esbuild', './plugin/get-functions.js', 'serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -15,7 +15,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   functions: serverlessFn,
-  package: { individually: true },
+  package: { individually: false },
   custom: {
     'serverless-offline': {
       httpPort: 3000,

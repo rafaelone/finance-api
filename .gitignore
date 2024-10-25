@@ -9,3 +9,5 @@ jspm_packages
 .esbuild
 tmp/**
 envs/prod.yml
+dist/*
+detail-functions.json
