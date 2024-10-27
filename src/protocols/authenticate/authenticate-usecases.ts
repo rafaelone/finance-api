@@ -1,8 +1,5 @@
 export interface IAuthenticateUseCases {
-  signIn: (
-    email: string,
-    password: string,
-  ) => Promise<{ token: string } | null>;
+  signIn: (email: string, password: string) => Promise<{ id: string } | null>;
 
   createAccount: (
     name: string,

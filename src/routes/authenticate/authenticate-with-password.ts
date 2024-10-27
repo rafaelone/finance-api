@@ -1,10 +1,10 @@
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
 import { makeAuthenticaUseCases } from '@/factories/usecases/authenticate-factory';
 
-export function signIn(app: FastifyInstance) {
+export function authenticateWithPassword(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/authenticate',
     {
@@ -22,14 +22,32 @@ export function signIn(app: FastifyInstance) {
         },
       },
     },
-    async () => {
+    async (
+      request: FastifyRequest<{ Body: { email: string; password: string } }>,
+      reply,
+    ) => {
+      const { email, password } = request.body;
       // const prisma = makePrismaService();
       // const userService = new UserService(prisma);
 
-      const user = makeAuthenticaUseCases();
+      const authenticate = makeAuthenticaUseCases();
 
-      user.signIn('dadsa');
+      const response = await authenticate.signIn(email, password);
+      console.log(response);
       // return response;
+
+      const token = await reply.jwtSign(
+        {
+          sub: response.id,
+        },
+        {
+          sign: {
+            expiresIn: '1d',
+          },
+        },
+      );
+
+      return reply.status(201).send({ token });
     },
   );
 }

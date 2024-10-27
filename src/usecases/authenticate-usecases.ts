@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs';
+import { compare, hash } from 'bcryptjs';
 
 import { BadRequestError } from '@/_errors/bad-request-error';
 import type { IAuthenticateUseCases } from '@/protocols/authenticate/authenticate-usecases';
@@ -8,14 +8,22 @@ export class AuthenticateUseCases implements IAuthenticateUseCases {
   constructor(private readonly userRepository: IUserRepositoryGetUser) {}
 
   async signIn(email: string, password: string) {
-    const user = this.userRepository.findByEmail(email);
-    console.log(password);
+    const user = await this.userRepository.findByEmail(email);
+
     if (!user) {
-      throw new Error();
+      throw new BadRequestError('Invalid e-mail or password.');
+    }
+
+    console.log(user.password);
+
+    const isPasswordValid = await compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new BadRequestError('Invalid e-mail or password.');
     }
 
     // return user;
-    return { token: '' };
+    return { id: user.id };
   }
 
   async createAccount(name: string, email: string, password: string) {
