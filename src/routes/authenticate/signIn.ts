@@ -2,10 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
-import { makePrismaService } from '@/factories/prisma-client-factory';
 import { makeAuthenticaUseCases } from '@/factories/usecases/authenticate-factory';
-import { UserService } from '@/services/user-service';
-import { AuthenticateUseCases } from '@/usecases/authenticate-usecases';
 
 export function signIn(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(

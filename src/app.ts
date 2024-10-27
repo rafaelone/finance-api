@@ -11,13 +11,16 @@ import {
 } from 'fastify-type-provider-zod';
 
 import { env } from '@/env';
-import routes from '@/routes';
+
+import { errorHandler } from './_errors/error-handler';
+import { createAccount } from './routes/authenticate/create-account';
+// import { createAccount } from './routes/authenticate/create-account';
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
-// app.setErrorHandler(errorHandler);
+app.setErrorHandler(errorHandler);
 
 app.register(fastifySwagger, {
   openapi: {
@@ -48,7 +51,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(fastifyCors);
-app.register(routes);
+app.register(createAccount);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log('HTTP server running');
