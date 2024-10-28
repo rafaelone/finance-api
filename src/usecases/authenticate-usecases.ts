@@ -14,15 +14,12 @@ export class AuthenticateUseCases implements IAuthenticateUseCases {
       throw new BadRequestError('Invalid e-mail or password.');
     }
 
-    console.log(user.password);
-
     const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new BadRequestError('Invalid e-mail or password.');
     }
 
-    // return user;
     return { id: user.id };
   }
 

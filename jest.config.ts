@@ -18,6 +18,7 @@ const config = {
     '!src/lib/**/*.ts',
     '!src/protocols/**/*.ts',
     '!src/_errors/**/*.ts',
+    '!src/@types/**/*.ts',
   ],
   coverageProvider: 'v8',
 

@@ -26,28 +26,34 @@ export function authenticateWithPassword(app: FastifyInstance) {
       request: FastifyRequest<{ Body: { email: string; password: string } }>,
       reply,
     ) => {
-      const { email, password } = request.body;
-      // const prisma = makePrismaService();
-      // const userService = new UserService(prisma);
+      try {
+        const { email, password } = request.body;
+        // const prisma = makePrismaService();
+        // const userService = new UserService(prisma);
 
-      const authenticate = makeAuthenticaUseCases();
+        const authenticate = makeAuthenticaUseCases();
 
-      const response = await authenticate.signIn(email, password);
-      console.log(response);
-      // return response;
+        const response = await authenticate.signIn(email, password);
 
-      const token = await reply.jwtSign(
-        {
-          sub: response.id,
-        },
-        {
-          sign: {
-            expiresIn: '1d',
+        // return response;
+
+        const token = await reply.jwtSign(
+          {
+            sub: response.id,
           },
-        },
-      );
+          {
+            sign: {
+              expiresIn: '1d',
+            },
+          },
+        );
 
-      return reply.status(201).send({ token });
+        return reply.status(201).send({ token });
+      } catch (err) {
+        return reply.status(401).send({
+          message: 'Try later',
+        });
+      }
     },
   );
 }

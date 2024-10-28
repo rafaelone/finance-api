@@ -7,12 +7,8 @@ import { makeAuthenticaUseCases } from '@/factories/usecases/authenticate-factor
 jest.mock('@/factories/usecases/authenticate-factory');
 
 describe('POST /create-account', () => {
-  // let app;
-
   beforeAll(async () => {
     await app.ready();
-    // app = Fastify();
-    // createAccount(app); // Registra a rota `createAccount` no Fastify
   });
 
   afterAll(async () => {
