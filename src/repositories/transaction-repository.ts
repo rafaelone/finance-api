@@ -2,6 +2,7 @@ import type { PrismaClient, TransactionType } from '@prisma/client';
 
 import type { ITransaction } from '@/protocols/transaction/transaction';
 import type { ITransactionRepository } from '@/protocols/transaction/transaction-repository';
+import { formatData } from '@/utils/formatData';
 
 export class TransactionRepository implements ITransactionRepository {
   private prismaTransactionClient;
@@ -15,13 +16,19 @@ export class TransactionRepository implements ITransactionRepository {
     limit: number = 12,
     offset: number = 0,
   ): Promise<ITransaction[]> {
-    const transactions = await this.prismaTransactionClient.findMany({
+    const response = await this.prismaTransactionClient.findMany({
       where: {
         userId,
       },
       take: limit,
       skip: offset,
     });
+
+    const transactions = response.map((transaction) => ({
+      ...transaction,
+      createdAt: formatData(transaction.createdAt.toString()),
+    }));
+
     return transactions;
   }
 
