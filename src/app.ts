@@ -17,6 +17,7 @@ import { authenticateWithPassword } from './routes/authenticate/authenticate-wit
 import { createAccount } from './routes/authenticate/create-account';
 import { createTransaction } from './routes/transaction/create-transaction';
 import { deleteTransaction } from './routes/transaction/delete-transaction';
+import { getTransactionBalance } from './routes/transaction/get-transaction-balance';
 import { getExpense } from './routes/transaction/get-transaction-expense';
 import { getRevenue } from './routes/transaction/get-transaction-revenue';
 import { getTransaction } from './routes/transaction/get-transactions';
@@ -66,6 +67,7 @@ app.register(updateTransaction);
 app.register(deleteTransaction);
 app.register(getExpense);
 app.register(getRevenue);
+app.register(getTransactionBalance);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log('HTTP server running');
