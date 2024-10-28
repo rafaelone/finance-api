@@ -27,6 +27,7 @@ export class TransactionRepository implements ITransactionRepository {
     const transactions = response.map((transaction) => ({
       ...transaction,
       createdAt: formatData(transaction.createdAt.toString()),
+      updatedAt: formatData(transaction.updatedAt.toString()),
     }));
 
     return transactions;
@@ -100,7 +101,6 @@ export class TransactionRepository implements ITransactionRepository {
         id: transactionId,
       },
       data: {
-        id: transactionId,
         name,
         type,
         value,

@@ -17,6 +17,7 @@ import { authenticateWithPassword } from './routes/authenticate/authenticate-wit
 import { createAccount } from './routes/authenticate/create-account';
 import { createTransaction } from './routes/transaction/create-transaction';
 import { getTransaction } from './routes/transaction/get-transactions';
+import { updateTransaction } from './routes/transaction/update-transaction';
 // import { createAccount } from './routes/authenticate/create-account';
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>();
@@ -58,6 +59,7 @@ app.register(createAccount);
 app.register(authenticateWithPassword);
 app.register(createTransaction);
 app.register(getTransaction);
+app.register(updateTransaction);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log('HTTP server running');
