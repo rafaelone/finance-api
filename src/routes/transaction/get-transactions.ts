@@ -21,8 +21,8 @@ export async function getTransaction(app: FastifyInstance) {
             },
           ],
           querystring: z.object({
-            limit: z.number().optional(),
-            offset: z.number().optional(),
+            limit: z.string().optional(),
+            offset: z.string().optional(),
           }),
           response: {
             200: z.object({
@@ -51,19 +51,19 @@ export async function getTransaction(app: FastifyInstance) {
         try {
           const userId = await request.getCurrentUserId();
 
-          const { limit = 12, offset = 0 } = request.query;
+          const { limit, offset } = request.query;
 
           const transactionUsecase = makeTransactionUseCases();
 
           const transactions = await transactionUsecase.get(
             userId,
-            limit,
-            offset,
+            Number(limit ?? 12),
+            Number(offset ?? 0),
           );
           return reply.status(201).send(transactions);
         } catch (err) {
           return reply.status(401).send({
-            message: 'Unable to create transaction.',
+            message: 'Transactions not found.',
           });
         }
       },
