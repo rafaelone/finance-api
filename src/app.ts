@@ -16,6 +16,7 @@ import { errorHandler } from './_errors/error-handler';
 import { authenticateWithPassword } from './routes/authenticate/authenticate-with-password';
 import { createAccount } from './routes/authenticate/create-account';
 import { createTransaction } from './routes/transaction/create-transaction';
+import { deleteTransaction } from './routes/transaction/delete-transaction';
 import { getTransaction } from './routes/transaction/get-transactions';
 import { updateTransaction } from './routes/transaction/update-transaction';
 // import { createAccount } from './routes/authenticate/create-account';
@@ -60,6 +61,7 @@ app.register(authenticateWithPassword);
 app.register(createTransaction);
 app.register(getTransaction);
 app.register(updateTransaction);
+app.register(deleteTransaction);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log('HTTP server running');
