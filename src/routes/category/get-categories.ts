@@ -53,13 +53,24 @@ export async function getCategories(app: FastifyInstance) {
 
           const categoryUsecase = makeCategoryUseCases();
 
-          const categories = await categoryUsecase.get(
+          const response = await categoryUsecase.get(
             userId,
             Number(limit ?? 12),
             Number(offset ?? 0),
           );
 
-          console.log(categories);
+          const categories = response.map((category) => ({
+            id: category.id,
+            name: category.name,
+            value: category.transactions?.reduce((acc, total) => {
+              if (total.type === 'DEPOSIT') {
+                return acc + total.value;
+              } else {
+                return acc - total.value;
+              }
+            }, 0),
+          }));
+
           return reply.status(201).send(categories);
         } catch (err) {
           return reply.status(401).send({

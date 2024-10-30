@@ -16,6 +16,8 @@ export interface ITransactionRepository {
     name: string,
     type: TransactionType,
     value: number,
+    categoryId: string,
+    date: string,
   ) => Promise<void>;
   update: (
     transactionId: string,

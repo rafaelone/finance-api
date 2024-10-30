@@ -25,6 +25,8 @@ export async function createTransaction(app: FastifyInstance) {
             name: z.string(),
             type: z.string(),
             value: z.number(),
+            categoryId: z.string().uuid(),
+            date: z.string(),
           }),
         },
       },
@@ -34,6 +36,8 @@ export async function createTransaction(app: FastifyInstance) {
             name: string;
             type: TransactionType;
             value: number;
+            categoryId: string;
+            date: string;
           };
         }>,
         reply,
@@ -41,11 +45,18 @@ export async function createTransaction(app: FastifyInstance) {
         try {
           const userId = await request.getCurrentUserId();
 
-          const { name, type, value } = request.body;
+          const { name, type, value, categoryId, date } = request.body;
 
           const transactionUsecase = makeTransactionUseCases();
 
-          await transactionUsecase.create(userId, name, type, value);
+          await transactionUsecase.create(
+            userId,
+            name,
+            type,
+            value,
+            categoryId,
+            date,
+          );
           return reply.status(201).send();
         } catch (err) {
           return reply.status(401).send({

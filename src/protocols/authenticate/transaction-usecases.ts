@@ -8,6 +8,8 @@ export interface ITransactionUseCases {
     name: string,
     type: TransactionType,
     value: number,
+    categoryId: string,
+    date: string,
   ) => Promise<void>;
   update: (
     userId: string,

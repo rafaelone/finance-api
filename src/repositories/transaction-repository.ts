@@ -71,6 +71,8 @@ export class TransactionRepository implements ITransactionRepository {
     name: string,
     type: TransactionType,
     value: number,
+    categoryId: string,
+    date: string,
   ): Promise<void> {
     await this.prismaTransactionClient.create({
       data: {
@@ -78,6 +80,8 @@ export class TransactionRepository implements ITransactionRepository {
         name,
         type,
         value,
+        categoryId,
+        date,
       },
     });
   }

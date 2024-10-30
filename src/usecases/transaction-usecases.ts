@@ -12,8 +12,17 @@ export class TransactionUseCases implements ITransactionUseCases {
     name: string,
     type: TransactionType,
     value: number,
+    categoryId: string,
+    date: string,
   ): Promise<void> {
-    await this.transactionRepository.create(userId, name, type, value);
+    await this.transactionRepository.create(
+      userId,
+      name,
+      type,
+      value,
+      categoryId,
+      date,
+    );
   }
 
   async update(
