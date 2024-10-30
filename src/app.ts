@@ -15,6 +15,10 @@ import { env } from '@/env';
 import { errorHandler } from './_errors/error-handler';
 import { authenticateWithPassword } from './routes/authenticate/authenticate-with-password';
 import { createAccount } from './routes/authenticate/create-account';
+import { createCategory } from './routes/category/create-category';
+import { deleteCategory } from './routes/category/delete-category';
+import { getCategories } from './routes/category/get-categories';
+import { updateCategory } from './routes/category/update-category';
 import { createTransaction } from './routes/transaction/create-transaction';
 import { deleteTransaction } from './routes/transaction/delete-transaction';
 import { getTransactionBalance } from './routes/transaction/get-transaction-balance';
@@ -68,6 +72,10 @@ app.register(deleteTransaction);
 app.register(getExpense);
 app.register(getRevenue);
 app.register(getTransactionBalance);
+app.register(createCategory);
+app.register(getCategories);
+app.register(updateCategory);
+app.register(deleteCategory);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log('HTTP server running');
