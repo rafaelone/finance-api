@@ -132,7 +132,6 @@ describe('Transaction Repository', () => {
       date: '2024-10-31',
     };
 
-    // Chamamos a função create no repositório, que deve acionar o mock
     await transactionRepository.create(
       transactionData.userId,
       transactionData.name,
@@ -142,7 +141,6 @@ describe('Transaction Repository', () => {
       transactionData.date,
     );
 
-    // Verificamos se a função create do prisma foi chamada com os dados corretos
     expect(mockPrismaClient.transaction.create).toHaveBeenCalledWith({
       data: transactionData,
     });
