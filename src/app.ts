@@ -37,8 +37,8 @@ app.setErrorHandler(errorHandler);
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'League of Legends API',
-      description: 'League of Legends API.',
+      title: 'Finances API',
+      description: 'Finances API.',
       version: '1.0.0',
     },
     components: {
@@ -66,14 +66,15 @@ app.register(fastifyCors);
 app.register(createAccount);
 app.register(authenticateWithPassword);
 app.register(createTransaction);
+app.register(createCategory);
 app.register(getTransaction);
-app.register(updateTransaction);
-app.register(deleteTransaction);
+app.register(getCategories);
 app.register(getExpense);
 app.register(getRevenue);
 app.register(getTransactionBalance);
-app.register(createCategory);
-app.register(getCategories);
+app.register(updateTransaction);
+app.register(deleteTransaction);
+
 app.register(updateCategory);
 app.register(deleteCategory);
 
