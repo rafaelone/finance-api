@@ -23,7 +23,7 @@ export async function getRevenue(app: FastifyInstance) {
 
           response: {
             200: z.object({
-              expense: z.number(),
+              revenue: z.number(),
             }),
           },
         },
@@ -42,11 +42,11 @@ export async function getRevenue(app: FastifyInstance) {
 
           const transactionUsecase = makeTransactionUseCases();
 
-          const expense = await transactionUsecase.revenues(userId);
-          return reply.status(201).send({ expense });
+          const revenue = await transactionUsecase.revenues(userId);
+          return reply.status(201).send({ revenue });
         } catch (err) {
-          return reply.status(401).send({
-            message: 'Transactions not found.',
+          return reply.status(404).send({
+            message: 'Revenue not found.',
           });
         }
       },

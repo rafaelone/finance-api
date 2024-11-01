@@ -45,8 +45,8 @@ export async function getTransactionBalance(app: FastifyInstance) {
           const balance = await transactionUsecase.balance(userId);
           return reply.status(201).send({ balance });
         } catch (err) {
-          return reply.status(401).send({
-            message: 'Transactions not found.',
+          return reply.status(404).send({
+            message: 'Balance not found.',
           });
         }
       },

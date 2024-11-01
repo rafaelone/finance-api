@@ -45,8 +45,8 @@ export async function getExpense(app: FastifyInstance) {
           const expense = await transactionUsecase.expenses(userId);
           return reply.status(201).send({ expense });
         } catch (err) {
-          return reply.status(401).send({
-            message: 'Transactions not found.',
+          return reply.status(404).send({
+            message: 'Expense not found.',
           });
         }
       },

@@ -62,7 +62,7 @@ export async function getTransaction(app: FastifyInstance) {
           );
           return reply.status(201).send(transactions);
         } catch (err) {
-          return reply.status(401).send({
+          return reply.status(404).send({
             message: 'Transactions not found.',
           });
         }
