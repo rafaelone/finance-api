@@ -73,7 +73,8 @@ export async function getCategories(app: FastifyInstance) {
 
           return reply.status(201).send(categories);
         } catch (err) {
-          return reply.status(401).send({
+          console.log(err);
+          return reply.status(404).send({
             message: 'Categories not found.',
           });
         }

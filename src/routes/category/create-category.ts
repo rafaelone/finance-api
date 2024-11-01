@@ -41,6 +41,7 @@ export async function createCategory(app: FastifyInstance) {
           const CategoryUseCases = makeCategoryUseCases();
 
           await CategoryUseCases.create(userId, name);
+
           return reply.status(201).send();
         } catch (err) {
           return reply.status(401).send({
