@@ -4,7 +4,11 @@ import supertest from 'supertest';
 import { app } from '@/app';
 import { makeAuthenticaUseCases } from '@/factories/usecases/authenticate-factory';
 
-jest.mock('@/factories/usecases/authenticate-factory');
+jest.mock('@/factories/usecases/authenticate-factory', () => ({
+  makeAuthenticaUseCases: jest.fn().mockReturnValue({
+    createUser: jest.fn(),
+  }),
+}));
 
 describe('POST /create-account', () => {
   beforeAll(async () => {

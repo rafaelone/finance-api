@@ -3,7 +3,7 @@ import supertest from 'supertest';
 
 import { app } from '@/app';
 import { makeAuthenticaUseCases } from '@/factories/usecases/authenticate-factory';
-import { makeTransactionUseCases } from '@/factories/usecases/transaction-factory';
+import { makeCategoryUseCases } from '@/factories/usecases/category-factory';
 import type { IUserRepositoryGetUser } from '@/protocols/user/user-repository';
 import { AuthenticateUseCases } from '@/usecases/authenticate-usecases';
 
@@ -13,9 +13,9 @@ jest.mock('bcryptjs', () => ({
 }));
 
 jest.mock('@/factories/usecases/authenticate-factory');
-jest.mock('@/factories/usecases/transaction-factory');
+jest.mock('@/factories/usecases/category-factory');
 
-describe('POST /transaction', () => {
+describe('GET /category', () => {
   const user = {
     id: '123',
     name: 'Joh Doe',
@@ -46,20 +46,12 @@ describe('POST /transaction', () => {
     authenticateUseCases = new AuthenticateUseCases(userRepository);
   });
 
-  it('should create a new transaction', async () => {
+  it('should get all user categories', async () => {
     userRepository.findByEmail.mockResolvedValue(user);
     (compare as jest.Mock).mockResolvedValue(true);
 
-    const result = await authenticateUseCases.signIn(
-      'johdoe@example.com',
-      'johdoe123',
-    );
+    await authenticateUseCases.signIn('johdoe@example.com', 'johdoe123');
 
-    expect(result).toEqual({ id: user.id });
-    expect(userRepository.findByEmail).toHaveBeenCalledWith(
-      'johdoe@example.com',
-    );
-    expect(compare).toHaveBeenCalledWith('johdoe123', user.password);
     const mockSignIn = jest.fn().mockResolvedValueOnce({ id: '123' });
 
     (makeAuthenticaUseCases as jest.Mock).mockImplementation(() => ({
@@ -73,38 +65,52 @@ describe('POST /transaction', () => {
 
     const data: { token: string } = JSON.parse(response.text);
 
-    (makeTransactionUseCases as jest.Mock).mockImplementation(() => ({
-      create: jest.fn(),
+    (makeCategoryUseCases as jest.Mock).mockImplementation(() => ({
+      get: jest.fn().mockReturnValue([
+        {
+          id: '1',
+          name: 'Category 1',
+          createdAt: 'OCT 20, 2024',
+          updatedAt: 'OCT 20, 2024',
+          userId: '123',
+          transactions: [
+            {
+              id: '1',
+              userId: '123',
+              name: 'Transaction 1',
+              type: 'DEPOSIT',
+              value: 100,
+              createdAt: 'OCT 20, 2024',
+              updatedAt: 'OCT 20, 2024',
+            },
+            {
+              id: '1',
+              userId: '123',
+              name: 'Transaction 2',
+              type: 'WITHDRAW',
+              value: 50,
+              createdAt: 'OCT 20, 2024',
+              updatedAt: 'OCT 20, 2024',
+            },
+          ],
+        },
+      ]),
     }));
 
-    const transaction = await supertest(app.server)
-      .post('/transaction')
-      .set('Authorization', `Bearer ${data.token}`)
-      .send({
-        name: 'New Transaction',
-        type: 'DEPOSIT',
-        value: 100,
-        categoryId: '746e1e11-5c78-44a4-825b-300d8ddb0bd9',
-        date: 'OCT 20, 2024',
-      });
+    const category = await supertest(app.server)
+      .get('/category')
+      .set('Authorization', `Bearer ${data.token}`);
 
-    expect(transaction.status).toBe(201);
+    expect(category.status).toBe(201);
+    expect(category.body).toEqual([{ id: '1', name: 'Category 1', value: 50 }]);
   });
 
-  it('should return 401 if creation fails', async () => {
+  it('should return 404 if error', async () => {
     userRepository.findByEmail.mockResolvedValue(user);
     (compare as jest.Mock).mockResolvedValue(true);
 
-    const result = await authenticateUseCases.signIn(
-      'johdoe@example.com',
-      'johdoe123',
-    );
+    await authenticateUseCases.signIn('johdoe@example.com', 'johdoe123');
 
-    expect(result).toEqual({ id: user.id });
-    expect(userRepository.findByEmail).toHaveBeenCalledWith(
-      'johdoe@example.com',
-    );
-    expect(compare).toHaveBeenCalledWith('johdoe123', user.password);
     const mockSignIn = jest.fn().mockResolvedValueOnce({ id: '123' });
 
     (makeAuthenticaUseCases as jest.Mock).mockImplementation(() => ({
@@ -118,23 +124,17 @@ describe('POST /transaction', () => {
 
     const data: { token: string } = JSON.parse(response.text);
 
-    (makeTransactionUseCases as jest.Mock).mockImplementation(() => ({
-      create: jest.fn().mockRejectedValueOnce(new Error('Creation failed')),
+    (makeCategoryUseCases as jest.Mock).mockImplementation(() => ({
+      get: jest.fn().mockRejectedValueOnce(new Error('Categories not found')),
     }));
 
-    const transaction = await supertest(app.server)
-      .post('/transaction')
-      .set('Authorization', `Bearer ${data.token}`) // Simulando o token gerado no login
-      .send({
-        name: 'New Transaction',
-        type: 'DEPOSIT',
-        value: 100,
-        categoryId: '746e1e11-5c78-44a4-825b-300d8ddb0bd9',
-        date: 'OCT 20, 2024',
-      });
-    expect(transaction.status).toBe(401);
-    expect(transaction.body).toEqual({
-      message: 'Unable to create transaction.',
+    const category = await supertest(app.server)
+      .get('/category')
+      .set('Authorization', `Bearer ${data.token}`);
+
+    expect(category.status).toBe(404);
+    expect(category.body).toEqual({
+      message: 'Categories not found.',
     });
   });
 });

@@ -110,6 +110,7 @@ describe('Transaction Repository', () => {
 
     expect(revenues).toEqual(2000);
   });
+
   it('should get total balance ', async () => {
     jest.spyOn(transactionRepository, 'getTotalRevenue').mockResolvedValue(500);
     jest
