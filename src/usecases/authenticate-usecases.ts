@@ -34,4 +34,14 @@ export class AuthenticateUseCases implements IAuthenticateUseCases {
 
     await this.userRepository.createUser(name, email, passwordHash);
   }
+
+  async getProfile(id: string) {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
+  }
 }

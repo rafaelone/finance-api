@@ -1,3 +1,5 @@
+import type { IUser } from '../user/user';
+
 export interface IAuthenticateUseCases {
   signIn: (email: string, password: string) => Promise<{ id: string } | null>;
 
@@ -6,4 +8,6 @@ export interface IAuthenticateUseCases {
     email: string,
     password: string,
   ) => Promise<void>;
+
+  getProfile: (id: string) => Promise<IUser | null>;
 }

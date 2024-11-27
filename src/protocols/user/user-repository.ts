@@ -8,5 +8,6 @@ export interface IUserRepository {
 
 export interface IUserRepositoryGetUser {
   findByEmail(email: string): Promise<IUser | null>;
+  findById(id: string): Promise<IUser | null>;
   createUser: (name: string, email: string, password: string) => Promise<void>;
 }

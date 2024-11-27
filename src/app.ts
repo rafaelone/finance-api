@@ -15,6 +15,7 @@ import { env } from '@/env';
 import { errorHandler } from './_errors/error-handler';
 import { authenticateWithPassword } from './routes/authenticate/authenticate-with-password';
 import { createAccount } from './routes/authenticate/create-account';
+import { getProfile } from './routes/authenticate/profile';
 import { createCategory } from './routes/category/create-category';
 import { deleteCategory } from './routes/category/delete-category';
 import { getCategories } from './routes/category/get-categories';
@@ -77,6 +78,7 @@ app.register(deleteTransaction);
 
 app.register(updateCategory);
 app.register(deleteCategory);
+app.register(getProfile);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log('HTTP server running');

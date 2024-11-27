@@ -20,6 +20,21 @@ export class TransactionRepository implements ITransactionRepository {
       where: {
         userId,
       },
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
+        type: true,
+        value: true,
+        userId: true,
+
+        Category: {
+          select: {
+            name: true,
+          },
+        },
+      },
       take: limit,
       skip: offset,
     });
@@ -28,6 +43,7 @@ export class TransactionRepository implements ITransactionRepository {
       ...transaction,
       createdAt: formatData(transaction.createdAt.toString()),
       updatedAt: formatData(transaction.updatedAt.toString()),
+      Category: transaction.Category.name,
     }));
 
     return transactions;
