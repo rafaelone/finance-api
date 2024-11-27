@@ -8,5 +8,5 @@ export interface ITransaction {
   type: TransactionType;
   value: number;
   userId: string | null;
-  Category: string;
+  Category?: string;
 }

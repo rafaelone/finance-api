@@ -8,3 +8,12 @@ export interface ICategory {
   userId: string | null;
   transactions?: ITransaction[];
 }
+
+export interface ICategorySpend {
+  totalMoney: number;
+  categories: {
+    name: string;
+    totalWithdraw: number;
+    percentage: number;
+  }[];
+}

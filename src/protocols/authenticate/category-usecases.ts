@@ -1,4 +1,4 @@
-import type { ICategory } from '../category/category';
+import type { ICategory, ICategorySpend } from '../category/category';
 
 export interface ICategoryUseCases {
   create: (userId: string, name: string) => Promise<void>;
@@ -8,5 +8,10 @@ export interface ICategoryUseCases {
     limit?: number,
     offset?: number,
   ) => Promise<ICategory[]>;
+  getTotalSpended: (
+    userId: string,
+    limit?: number,
+    offset?: number,
+  ) => Promise<ICategorySpend>;
   delete: (categoryId: string) => Promise<void>;
 }

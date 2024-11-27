@@ -2,38 +2,33 @@ import type { FastifyInstance, FastifyRequest } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
-import { makeTransactionUseCases } from '@/factories/usecases/transaction-factory';
+import { makeCategoryUseCases } from '@/factories/usecases/category-factory';
 import { auth } from '@/middlewares/auth';
 
-export async function getTransaction(app: FastifyInstance) {
+export async function getCategoriesTotalSpended(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/transaction',
+      '/category/total-spended',
       {
         schema: {
-          tags: ['Transaction'],
-          summary: 'Get all transaction',
+          tags: ['Category'],
+          summary: 'Get total spended in category',
           security: [
             {
               bearerAuth: [],
             },
           ],
-          querystring: z.object({
-            limit: z.string().optional(),
-            offset: z.string().optional(),
-          }),
+
           response: {
             200: z.object({
-              transactions: z.array(
+              totalMoney: z.number(),
+              categories: z.array(
                 z.object({
-                  id: z.string().uuid(),
+                  percentage: z.number(),
                   name: z.string(),
-                  created: z.string(),
-                  type: z.string(),
-                  value: z.number(),
-                  Category: z.string(),
+                  totalWithdraw: z.number(),
                 }),
               ),
             }),
@@ -54,18 +49,18 @@ export async function getTransaction(app: FastifyInstance) {
 
           const { limit, offset } = request.query;
 
-          const transactionUsecase = makeTransactionUseCases();
+          const categoryUsecase = makeCategoryUseCases();
 
-          const transactions = await transactionUsecase.get(
+          const response = await categoryUsecase.getTotalSpended(
             userId,
             Number(limit ?? 12),
             Number(offset ?? 0),
           );
 
-          return reply.status(201).send(transactions);
+          return reply.status(201).send(response);
         } catch (err) {
           return reply.status(404).send({
-            message: 'Transactions not found.',
+            message: 'Categories not found.',
           });
         }
       },

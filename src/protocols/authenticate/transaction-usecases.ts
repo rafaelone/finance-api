@@ -23,6 +23,7 @@ export interface ITransactionUseCases {
     limit?: number,
     offset?: number,
   ) => Promise<ITransaction[]>;
+
   delete: (transactionId: string) => Promise<void>;
   revenues: (userId: string) => Promise<number>;
   expenses: (userId: string) => Promise<number>;
