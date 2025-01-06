@@ -8,7 +8,8 @@
     "env:load": "dotenv -e ./.env --",
     "db:migrate": "npm run env:load prisma migrate dev",
     "db:init": "npm run env:load prisma init",
-    "db:studio": "npm run env:load prisma studio"
+    "db:studio": "npm run env:load prisma studio",
+    "test": "dotenv -e ./.env.test -- jest --coverage --watchAll false"
   },
   "dependencies": {
     "@fastify/cors": "^10.0.1",
